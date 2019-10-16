@@ -37,4 +37,5 @@ const Input = mongoose.model('Input',{
     }
 })
 
+
 module.exports=Input;
