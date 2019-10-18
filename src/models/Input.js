@@ -1,14 +1,17 @@
 const mongoose = require('mongoose');
+const uniqueValidator = require('mongoose-unique-validator');
 
-const Input = mongoose.model('Input',{
+const inputSchema=new mongoose.Schema({
 
     inpfldname: {
         type: String,
+        unique: true,
         required: true,
         trim: true
     },
     startpos: {
         type: Number,
+        unique: true,
         required: true,
         validate(value){
             if(value<0){
@@ -18,6 +21,7 @@ const Input = mongoose.model('Input',{
     },
     endpos: {
         type: Number,
+        unique: true,
         required: true,
         validate(value){
             if(value<0){
@@ -32,10 +36,15 @@ const Input = mongoose.model('Input',{
     },
     opfldname : {
         type: String,
+        unique: true,
         required: true,
         trim: true
     }
-})
+});
+
+inputSchema.plugin(uniqueValidator);
+
+const Input = mongoose.model('Input',inputSchema);
 
 
 module.exports=Input;

@@ -1,5 +1,5 @@
 const express = require('express')
-const Input=require('../models/input');
+const Output=require('../models/output');
 const router = new express.Router()
 
 
@@ -9,9 +9,28 @@ router.post('/inputuploaddb',async (req,res)=>{
     const input=new Input(req.body);
 
     try {
+
         await input.save();
         
         res.status(201).send(input);
+        
+    }catch(e){
+        res.status(400).send(e);
+    }
+
+})
+
+
+/* Upload the output layout to mongoDb */
+router.post('/outputuploaddb',async (req,res)=>{
+
+    const output=new Output(req.body);
+
+    try {
+
+        await output.save();
+        
+        res.status(201).send(output);
         
     }catch(e){
         res.status(400).send(e);
