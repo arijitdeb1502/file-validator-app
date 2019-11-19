@@ -1,21 +1,23 @@
 const express = require('express')
+const Input=require('../models/input');
 const Output=require('../models/output');
-const router = new express.Router()
+
+const router = new express.Router();
 
 
 /* Upload the input layout to mongoDb */
 router.post('/inputuploaddb',async (req,res)=>{
-
+    
     const input=new Input(req.body);
 
     try {
 
         await input.save();
-        
         res.status(201).send(input);
         
     }catch(e){
-        res.status(400).send(e);
+        
+        res.status(400).send();
     }
 
 })
@@ -29,15 +31,55 @@ router.post('/outputuploaddb',async (req,res)=>{
     try {
 
         await output.save();
-        
         res.status(201).send(output);
         
     }catch(e){
-        res.status(400).send(e);
+        res.status(400).send();
     }
 
 })
 
+/* Get all input layouts from db */
+router.get('/inputlayoutdetails',async (req,res)=>{
+    try{
+        const inputs=await Input.find({})
+        res.send(inputs)
+    }catch(e){
+        res.status(500).send();
+    }
+})
+
+/* Map input field to output field */
+router.get('/inputvsoutput/:inpfldname',async (req,res)=>{
+
+    const inputFldName=req.params.inpfldname
+    // console.log(inputFldName);
+
+    // res.send({fld: inputFldName })
+
+    try{
+        const input=await Input.find({inpfldname:inputFldName });
+
+        if(input){
+            console.log(input[0]);
+            const output=await Output.find({opfldname:input[0].opfldname});
+            console.log(output);
+            res.send(output);
+        }else{
+            return res.status(404).send({ Error: `${inputFldName} does not exist in input doc of mongodb`})
+        }
+
+    }catch(e){
+        res.status(500).send();
+    }
+
+    // try{
+    //     const inputs=await Input.find({})
+    //     res.send(inputs)
+    // }catch(e){
+    //     res.status(500).send();
+    // }
+})
 
 // const path=require('path');
 // const multer=require('multer');
@@ -90,6 +132,7 @@ router.post('/outputuploaddb',async (req,res)=>{
 // /* This endpoint is responsible for uploading file input layout to the application.
 //    Facilitates file Posting */
 // router.post('/uploadinputlayout',upload.single('inputlayout'),(req,res)=>{
+//         console.log(req.file.originalname.toString())
 //         res.status(201).send({
 //           InputLayoutFile : req.file.originalname,
 //           Message         : 'Input layout File Upload successful!!'
