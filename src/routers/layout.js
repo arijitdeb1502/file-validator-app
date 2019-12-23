@@ -13,11 +13,20 @@ router.post('/api/v1/inputuploaddb',async (req,res)=>{
     try {
 
         await input.save();
-        res.status(201).send(input);
+
+        res.status(201).send({
+            status: 201,
+            message: `Successfully uploaded output layout to the database.`,
+            ...input
+        });
         
     }catch(e){
         
-        res.status(400).send();
+        res.status(400).send({
+            status: 400,
+            message: `Invalid input field`,
+            ...input
+        });
     }
 
 })
@@ -31,10 +40,18 @@ router.post('/api/v1/outputuploaddb',async (req,res)=>{
     try {
 
         await output.save();
-        res.status(201).send(output);
+        res.status(201).send({
+            status: 201,
+            message: `Successfully uploaded output layout to the database.`,
+            ...output
+        });
         
     }catch(e){
-        res.status(400).send();
+        res.status(400).send({
+            status: 400,
+            message: `Invalid output field`,
+            ...output
+        });
     }
 
 })
