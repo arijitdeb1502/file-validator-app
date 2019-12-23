@@ -6,7 +6,7 @@ const router = new express.Router();
 
 
 /* Upload the input layout to mongoDb */
-router.post('/inputuploaddb',async (req,res)=>{
+router.post('/api/v1/inputuploaddb',async (req,res)=>{
     
     const input=new Input(req.body);
 
@@ -24,7 +24,7 @@ router.post('/inputuploaddb',async (req,res)=>{
 
 
 /* Upload the output layout to mongoDb */
-router.post('/outputuploaddb',async (req,res)=>{
+router.post('/api/v1/outputuploaddb',async (req,res)=>{
 
     const output=new Output(req.body);
 
@@ -50,7 +50,7 @@ router.get('/inputlayoutdetails',async (req,res)=>{
 })
 
 /* Map input field to output field */
-router.get('/inputvsoutput/:inpfldname',async (req,res)=>{
+router.get('/api/v1/inputvsoutput/:inpfldname',async (req,res)=>{
 
     const inputFldName=req.params.inpfldname
     // console.log(inputFldName);
@@ -61,7 +61,7 @@ router.get('/inputvsoutput/:inpfldname',async (req,res)=>{
         const input=await Input.find({inpfldname:inputFldName });
 
         if(input){
-            console.log(input[0]);
+            // console.log(input[0]);
             const output=await Output.find({opfldname:input[0].opfldname});
             console.log(output);
             res.send(output);

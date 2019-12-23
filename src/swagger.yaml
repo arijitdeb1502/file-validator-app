@@ -1,0 +1,133 @@
+swagger: "2.0"
+info:
+  description: "This is a filevalidator backend application which can validate any type of file types. Currently it validates only fixed formated files. It has the options of uploading input and output layout of a fixed formatted file and looking through the input it generates the appropriate value in the output and displays it."
+  version: "1.0.0"
+  title: "File Validator App"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "arijitdeb.work@gmail.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "localhost:3000"
+basePath: "/api/v1"
+schemes:
+- "http"
+paths:
+  /inputuploaddb:
+    post:
+      tags:
+      - "layout module"
+      summary: "Upload input layout to the db"
+      description: "API to upload a input layout of a fixed format file to database"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Input Layout Object that needs to be uploaded to the DB"
+        required: true
+        schema:
+          $ref: "#/definitions/Input"
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Uploaded Successfully
+          schema:
+            $ref: '#/definitions/InputApiResponse'
+        '400':
+          description: Invalid Fields
+  /outputuploaddb:
+    post:
+      tags:
+      - "layout module"
+      summary: "Upload output layout to the db"
+      description: "API to upload a input layout of a fixed format file to database"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Output Layout Object that needs to be uploaded to the DB"
+        required: true
+        schema:
+          $ref: "#/definitions/Output"
+      produces:
+        - application/json
+      responses:
+        '201':
+          description: Uploaded Successfully
+          schema:
+            $ref: '#/definitions/OutputApiResponse'
+        '400':
+          description: Invalid Fields          
+definitions:
+  Input:
+    properties:
+      inpfldname:
+        type: string
+        description: Input Field name
+      startpos:
+        type: number
+        description: Starting position of the input field
+      endpos:
+        type: number
+        description: Ending position of the input field
+      transformlogic:
+        type: string
+        description: Defininition name of the transformation logic
+      opfldname:
+        type: string
+        description: Output field name
+  InputApiResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: object
+        properties:
+          inpfldname:
+            type: string
+            description: Input Field name
+          startpos:
+            type: number
+            description: Starting position of the input field
+          endpos:
+            type: number
+            description: Ending position of the input field
+          transformlogic:
+            type: string
+            description: Defininition name of the transformation logic
+          opfldname:
+            type: string
+            description: Output field name
+  Output:
+    properties:
+      opfldname:
+        type: string
+        description: Input Field name
+      startpos:
+        type: number
+        description: Starting position of the Output field
+      endpos:
+        type: number
+        description: Ending position of the Output field
+  OutputApiResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: object
+        properties:
+          opfldname:
+            type: string
+            description: Input Field name
+          startpos:
+            type: number
+            description: Starting position of the Output field
+          endpos:
+            type: number
+            description: Ending position of the Output field

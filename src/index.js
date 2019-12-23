@@ -1,6 +1,10 @@
 const express=require('express');
 require('./db/mongoose');
 
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
+
+const swaggerDocument=YAML.load('src/swagger.yaml');
 const layoutRouter=require('./routers/layout');
 const mapperRouter=require('./routers/mapper');
 const testinputRouter=require('./routers/testinput');
@@ -20,6 +24,9 @@ app.use(mapperRouter);
 app.use(testinputRouter);
 app.use(testoutputRouter);
 
+
+//API Documentation
+app.use('/api-docs',swaggerUi.serve,swaggerUi.setup(swaggerDocument));
 
 app.listen(port,()=>{
     console.log('Server is up on port  '+port);
